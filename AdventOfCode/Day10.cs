@@ -6,7 +6,7 @@ namespace AdventOfCode
     {
         public static void Run()
         {
-            var lines = File.ReadAllLines("input10.txt");
+            var lines = File.ReadAllLines("InputData/input10.txt");
             var registerPosition = 1;
             var currentCycles = 1;
 

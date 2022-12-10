@@ -6,7 +6,7 @@ namespace AdventOfCode
     {
         public static void RunPart1()
         {
-            var lines = File.ReadAllLines("input3.txt");
+            var lines = File.ReadAllLines("InputData/input3.txt");
             var prioritySum = 0;
             foreach (var line in lines)
             {
@@ -20,7 +20,7 @@ namespace AdventOfCode
 
         public static void RunPart2()
         {
-            var lines = File.ReadAllLines("input3.txt");
+            var lines = File.ReadAllLines("InputData/input3.txt");
             var prioritySum = 0;
             for (int i = 0; i < lines.Length; i+=3)
             {

@@ -17,7 +17,7 @@ namespace AdventOfCode
             if (FindMarkerPosition(line3, 14) != 29) throw new Exception();
             if (FindMarkerPosition(line4, 14) != 26) throw new Exception(); FindMarkerPosition(line4, 14);
             
-            var line = File.ReadAllLines("input6.txt")[0];
+            var line = File.ReadAllLines("InputData/input6.txt")[0];
             if (FindMarkerPosition(line, 14) != 2178) throw new Exception();
 
             Console.WriteLine("Day 6 test passes!");

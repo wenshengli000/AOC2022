@@ -4,7 +4,7 @@
     {
         public static void Run()
         {
-            var lines = File.ReadAllLines("input8.txt");
+            var lines = File.ReadAllLines("InputData/input8.txt");
             var height = lines.Length;
             var width = lines[0].Length;
             var forrest = new int[height, width];

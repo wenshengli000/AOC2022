@@ -5,7 +5,7 @@
         public static void Run()
         {
             var actions = new List<Movements>();
-            var lines = File.ReadAllLines("input9.txt");
+            var lines = File.ReadAllLines("InputData/input9.txt");
             foreach (var line in lines)
             {
                 actions.Add(new Movements(line.Split(new[] { ' ' })[0], Convert.ToInt32(line.Split(new[] { ' ' })[1])));

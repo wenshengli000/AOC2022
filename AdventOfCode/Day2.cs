@@ -5,7 +5,7 @@
         public static void Run()
         {
             var totalScore = 0;
-            var lines = File.ReadAllLines("input2.txt");
+            var lines = File.ReadAllLines("InputData/input2.txt");
             foreach (var line in lines)
             {
                 var strings = line.Split(new[] { ' ' });

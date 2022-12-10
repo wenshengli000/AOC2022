@@ -5,7 +5,7 @@ namespace AdventOfCode
     {
         public static void RunPart1()
         {
-            var lines = File.ReadAllLines("input5.txt");
+            var lines = File.ReadAllLines("InputData/input5.txt");
             var stacksOfCrates = CreateStackOfCrates(lines);
             MoveStackOfCrates(lines, stacksOfCrates);
 
@@ -76,7 +76,7 @@ namespace AdventOfCode
 
         public static void RunPart2()
         {
-            var lines = File.ReadAllLines("input5.txt");
+            var lines = File.ReadAllLines("InputData/input5.txt");
             var totalOverlaps = 0;
             var totalNotOverlaps = 0;
             foreach (var line in lines)

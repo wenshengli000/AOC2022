@@ -5,7 +5,7 @@ namespace AdventOfCode
     {
         public static void RunPart1()
         {
-            var lines = File.ReadAllLines("input4.txt");
+            var lines = File.ReadAllLines("InputData/input4.txt");
             var totalFullyContainingPairs = 0;
             foreach (var line in lines)
             {
@@ -34,7 +34,7 @@ namespace AdventOfCode
 
         public static void RunPart2()
         {
-            var lines = File.ReadAllLines("input4.txt");
+            var lines = File.ReadAllLines("InputData/input4.txt");
             var totalOverlaps = 0;
             var totalNotOverlaps = 0;
             foreach (var line in lines)

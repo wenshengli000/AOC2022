@@ -14,7 +14,7 @@
             var subTotalList = new List<int>();
 
 
-            var lines = File.ReadAllLines("input1.txt");
+            var lines = File.ReadAllLines("InputData/input1.txt");
 
             foreach (var line in lines)
             {

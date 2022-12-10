@@ -4,7 +4,7 @@
     {
         public static void Run()
         {
-            var lines = File.ReadAllLines("input7.txt");
+            var lines = File.ReadAllLines("InputData/input7.txt");
             
             DirectoryAndSize? rootDirectoryAndSize = BuildAllDirectories(lines);
 
