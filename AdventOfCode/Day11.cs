@@ -4,7 +4,7 @@
     {
         public static void Run()
         {
-            var lines = File.ReadAllLines("InputData/inputData/input11Test.txt");
+            var lines = File.ReadAllLines("InputData/input11Test.txt");
             foreach (var line in lines)
             {
 

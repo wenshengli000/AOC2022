@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace AdventOfCode
+﻿namespace AdventOfCode
 {
     internal class Day10
     {
@@ -8,10 +6,10 @@ namespace AdventOfCode
         {
             var lines = File.ReadAllLines("InputData/input10.txt");
             var registerPosition = 1;
-            var currentCycles = 1;
+            var currentCycle = 1;
 
             var cyclesToCheck = new List<int> { 20, 60, 100, 140, 180, 220};
-            var sumOfSignals = 0;
+            var sumOfSignalStrength = 0;
 
             var width = 40;
             var height = 6;
@@ -25,39 +23,27 @@ namespace AdventOfCode
                 if (line.StartsWith("addx"))
                 {
                     DrawPixel(crt, registerPosition, width, ref col, ref row);
-                    currentCycles++;
+                    currentCycle++;
 
-                    sumOfSignals = CheckSumOfSignals(cyclesToCheck, currentCycles, registerPosition, sumOfSignals);
+                    CheckSumOfSignals(cyclesToCheck, currentCycle, registerPosition, ref sumOfSignalStrength);
 
                     DrawPixel(crt, registerPosition, width, ref col, ref row);
-                    currentCycles++;
+                    currentCycle++;
 
                     registerPosition += Convert.ToInt32(line.Split(new[] { ' ' })[1]);
-                    sumOfSignals = CheckSumOfSignals(cyclesToCheck, currentCycles, registerPosition, sumOfSignals);
+                    CheckSumOfSignals(cyclesToCheck, currentCycle, registerPosition, ref sumOfSignalStrength);
                 }
                 if (line.StartsWith("noop"))
                 {
                     DrawPixel(crt, registerPosition, width, ref col, ref row);
-                    currentCycles++;
-                    sumOfSignals = CheckSumOfSignals(cyclesToCheck, currentCycles, registerPosition, sumOfSignals);
+                    currentCycle++;
+                    CheckSumOfSignals(cyclesToCheck, currentCycle, registerPosition, ref sumOfSignalStrength);
                 }
             }
 
-            if (sumOfSignals != 15140) throw new Exception();
+            if (sumOfSignalStrength != 15140) throw new Exception();
 
-            var output =new StringBuilder();
-            for (int r = 0; r < height; r++)
-            {
-                var line = string.Empty;
-                for (int c = 0; c < width; c++)
-                {
-                    line += crt[r, c];
-                }
-
-                output.Append(line);
-                Console.WriteLine(line);
-            }
-
+            var output = string.Join(string.Empty, crt.Cast<string>());
             if (!output.Equals(
                     "###..###....##..##..####..##...##..###..#..#.#..#....#.#..#....#.#..#.#..#.#..#.###..#..#...." +
                     "#.#..#...#..#....#..#.#..#.#..#.###.....#.####..#...#.##.####.###..#..#.#....#..#.#..#.#....#..#.#.." +
@@ -87,17 +73,15 @@ namespace AdventOfCode
             }
         }
 
-        private static int CheckSumOfSignals(List<int> cyclesToCheck, int currentCycles, int valueOfX, int sumOfSignals)
+        private static void CheckSumOfSignals(List<int> cyclesToCheck, int currentCycle, int registerPosition, ref int sumOfSignalStrength)
         {
-            if (cyclesToCheck.Any(x => x <= currentCycles))
+            if (cyclesToCheck.Any(cycle => cycle <= currentCycle))
             {
-                var currentCycle = cyclesToCheck.First(x => x <= currentCycles);
-                var signalStrength = currentCycle * valueOfX;
-                sumOfSignals += signalStrength;
-                cyclesToCheck.Remove(currentCycle);
+                var cycle = cyclesToCheck.First(cycle => cycle <= currentCycle);
+                var signalStrength = cycle * registerPosition;
+                sumOfSignalStrength += signalStrength;
+                cyclesToCheck.Remove(cycle);
             }
-
-            return sumOfSignals;
         }
     }
 }
