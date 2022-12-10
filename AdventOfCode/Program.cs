@@ -3,7 +3,7 @@
 
 Console.WriteLine("Hello, World!");
 
-Day9.Run();
+Day10.Run();
 
 
 
