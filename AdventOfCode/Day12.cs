@@ -5,13 +5,18 @@
         public static void Run()
         {
             var testHeightMap = new char[5, 8];
+            var visitedTestMap = new VisitedDirection[5, 8];
+
+
             var heightMap = new char[41, 159];
+            var visitedMap = new VisitedDirection[41, 159];
             var lines = File.ReadAllLines("InputData/input12Test.txt");
             for (int row = 0; row < lines.Length; row++)
             {
                 for (int col = 0; col < lines[row].Length; col++)
                 {
                     testHeightMap[row, col] = lines[row][col];
+                    visitedTestMap[row, col] = new VisitedDirection();
                 }
             }
 
@@ -32,59 +37,81 @@
                 if (destinationReached)
                     break;
                 steps++;
-                AddNeighboringReachableElvesPositions(startPosition, testHeightMap, ref destinationReached);
+                AddNeighboringReachableElvesPositions(startPosition, testHeightMap, visitedTestMap, ref destinationReached);
             }
 
             Console.WriteLine(steps);
             Console.ReadLine();
         }
 
-        private static void AddNeighboringReachableElvesPositions(ElvesPosition currentPosition, char[, ] heightMap, ref bool destinationReached)
+        private static void AddNeighboringReachableElvesPositions(ElvesPosition currentPosition, char[, ] heightMap, VisitedDirection[, ] visitedDirectionMap, ref bool destinationReached)
         {
             if (!currentPosition.NeighboringReachableElvesPositions.Any())
             {
                 //Look up
-                AddNeighbor(currentPosition, heightMap, ref destinationReached, currentPosition.Row - 1, currentPosition.Col);
+                if (currentPosition.Row - 1 > 0 && !visitedDirectionMap[currentPosition.Row - 1, currentPosition.Col].IsUpVisited)
+                {
+                    visitedDirectionMap[currentPosition.Row, currentPosition.Col].IsUpVisited = AddNeighbor(currentPosition,
+                        heightMap, ref destinationReached, currentPosition.Row - 1, currentPosition.Col);
+                }
 
                 //Look down
-                AddNeighbor(currentPosition, heightMap, ref destinationReached, currentPosition.Row + 1, currentPosition.Col);
+                if (currentPosition.Row + 1 < heightMap.GetLength(0) && !visitedDirectionMap[currentPosition.Row + 1, currentPosition.Col].IsUpVisited)
+                {
+                    visitedDirectionMap[currentPosition.Row, currentPosition.Col].IsDownVisited = AddNeighbor(currentPosition, 
+                        heightMap, ref destinationReached, currentPosition.Row + 1, currentPosition.Col);
+                }
 
                 //Look left
-                AddNeighbor(currentPosition, heightMap, ref destinationReached, currentPosition.Row, currentPosition.Col - 1);
+                if (currentPosition.Col - 1 > 0 && !visitedDirectionMap[currentPosition.Row, currentPosition.Col - 1].IsUpVisited)
+                {
+                    visitedDirectionMap[currentPosition.Row, currentPosition.Col].IsLeftVisited = AddNeighbor(currentPosition, 
+                        heightMap, ref destinationReached, currentPosition.Row, currentPosition.Col - 1);
+                }
 
                 //Look right
-                AddNeighbor(currentPosition, heightMap, ref destinationReached, currentPosition.Row, currentPosition.Col + 1);
+                if (currentPosition.Col + 1 < heightMap.GetLength(1) && !visitedDirectionMap[currentPosition.Row, currentPosition.Col + 1].IsUpVisited)
+                {
+                    visitedDirectionMap[currentPosition.Row, currentPosition.Col].IsRightVisited = AddNeighbor(currentPosition, 
+                        heightMap, ref destinationReached, currentPosition.Row, currentPosition.Col + 1);
+                }
             }
             else
             {
                 foreach (var neighboringReachableElvesPosition in currentPosition.NeighboringReachableElvesPositions)
                 {
-                    AddNeighboringReachableElvesPositions(neighboringReachableElvesPosition, heightMap, ref destinationReached);
+                    AddNeighboringReachableElvesPositions(neighboringReachableElvesPosition, 
+                        heightMap, visitedDirectionMap, ref destinationReached);
                 }
             }
         }
 
-        private static void AddNeighbor(ElvesPosition currentPosition, char[,] heightMap, ref bool destinationReached, int row, int col)
+        private static bool AddNeighbor(ElvesPosition currentPosition, char[,] heightMap, ref bool destinationReached, int row, int col)
         {
-            try
+            var neighbor = heightMap[row, col];
+            if (neighbor.Equals('S'))
+                return false;
+            if(currentPosition.PreviousElvesPosition?.Row == row && currentPosition.PreviousElvesPosition?.Col == col)
+                return false;
+            if (neighbor.Equals('Z'))
             {
-                var neighbor = heightMap[row, col];
-                if(currentPosition.PreviousElvesPosition?.Row == row && currentPosition.PreviousElvesPosition?.Col == col)
-                    return;
-                if (neighbor.Equals('Z'))
-                {
-                    destinationReached = true;
-                }
-                else if (currentPosition.Letter.Equals('S')|| Convert.ToInt32(neighbor) - Convert.ToInt32(currentPosition.Letter) <= 1)
-                {
-                    currentPosition.NeighboringReachableElvesPositions.Add(new ElvesPosition(row,
-                        col, neighbor, new List<ElvesPosition>(), currentPosition));
-                }
+                destinationReached = true;
             }
-            catch (IndexOutOfRangeException)
+            else if (currentPosition.Letter.Equals('S')|| Convert.ToInt32(neighbor) - Convert.ToInt32(currentPosition.Letter) <= 1)
             {
+                currentPosition.NeighboringReachableElvesPositions.Add(new ElvesPosition(row,
+                    col, neighbor, new List<ElvesPosition>(), currentPosition));
             }
+            return true;
         }
+    }
+
+    internal class VisitedDirection
+    {
+        public bool IsUpVisited { get; set; }
+        public bool IsDownVisited { get; set; }
+        public bool IsLeftVisited { get; set; }
+        public bool IsRightVisited { get; set; }
     }
 
     internal class ElvesPosition
